@@ -21,10 +21,10 @@ function makeBet() {
 	fi
 }
 
-function dailyBetting() {
+function makeBetAndUpdate() {
    local betAmount="$( makeBet )"
    dailyBetAmount=$(($dailyBetAmount+$betAmount))
 }
 
-dailyBetting
+makeBetAndUpdate
 
