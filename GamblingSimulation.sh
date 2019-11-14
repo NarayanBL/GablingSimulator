@@ -7,12 +7,13 @@ WON=1
 LOSS=0
 STAKE=100
 BET_AMOUNT=1
-DAILY_RESIGN_PERC=50
+DAILY_RESIGN_PERC=5
+NUM_OF_DAYS=2
 
 #Variable
-dailyBetAmount=$STAKE
-maxTotalDailyAmount=$(($STAKE+$STAKE*DAILY_RESIGN_PERC/100))
-minTotalDailyAmount=$(($STAKE-$STAKE*DAILY_RESIGN_PERC/100))
+dailyBetResult=0
+maxWin=$(($STAKE*DAILY_RESIGN_PERC/100))
+maxLoss=$((-$STAKE*DAILY_RESIGN_PERC/100))
 
 function makeBet() {
 	local betStatus=$((RANDOM%2))
@@ -26,16 +27,16 @@ function makeBet() {
 
 function makeBetAndUpdate() {
    local betAmount="$( makeBet )"
-   dailyBetAmount=$(($dailyBetAmount+$betAmount))
+   dailyBetResult=$(($dailyBetResult+$betAmount))
 }
 
 function dailyBetting() {
-	while [[ $dailyBetAmount -lt $maxTotalDailyAmount && 
-            $dailyBetAmount -gt $minTotalDailyAmount ]]
+	while [[ $dailyBetResult -lt $maxWin && 
+            $dailyBetResult -gt $maxLoss ]]
 	do
 		makeBetAndUpdate
 	done
 }
 
 dailyBetting
-echo $dailyBetAmount
+echo $dailyBetResult
