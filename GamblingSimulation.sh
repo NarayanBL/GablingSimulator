@@ -1,10 +1,15 @@
 #!/bin/bash -x
 
 echo "Welcome to Gambling Simulator Program"
+
+#CONSTANTS
 WON=1
 LOSS=0
 STAKE=100
 BET_AMOUNT=1
+
+#Variable
+dailyBetAmount=$STAKE
 
 function makeBet() {
 	local betStatus=$((RANDOM%2))
@@ -16,4 +21,10 @@ function makeBet() {
 	fi
 }
 
-makeBet
+function dailyBetting() {
+   local betAmount="$( makeBet )"
+   dailyBetAmount=$(($dailyBetAmount+$betAmount))
+}
+
+dailyBetting
+
