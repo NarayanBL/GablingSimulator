@@ -7,8 +7,8 @@ WON=1
 LOSS=0
 STAKE=100
 BET_AMOUNT=1
-DAILY_RESIGN_PERC=5
-NUM_OF_DAYS=2
+DAILY_RESIGN_PERC=50
+NUM_OF_DAYS=20
 
 #Variable
 dailyBetResult=0
@@ -38,5 +38,15 @@ function dailyBetting() {
 	done
 }
 
-dailyBetting
-echo $dailyBetResult
+function monthlyBetting() {
+	
+	for (( day=1; day <= $NUM_OF_DAYS; day++ ))
+	do
+   	dailyBetting
+		totalBetResult=$(( $totalBetResult + $dailyBetResult ))	
+		dailyBetResult=0
+	done
+	echo $totalBetResult
+}
+
+monthlyBetting
