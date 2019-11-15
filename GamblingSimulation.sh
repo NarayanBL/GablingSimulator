@@ -12,6 +12,7 @@ NUM_OF_DAYS=20
 
 #Variable
 dailyBetResult=0
+totalBetResult=0
 maxWin=$(($STAKE*DAILY_RESIGN_PERC/100))
 maxLoss=$((-$STAKE*DAILY_RESIGN_PERC/100))
 
@@ -28,25 +29,31 @@ function makeBet() {
 function makeBetAndUpdate() {
    local betAmount="$( makeBet )"
    dailyBetResult=$(($dailyBetResult+$betAmount))
+	echo $dailyBetResult
 }
 
 function dailyBetting() {
 	while [[ $dailyBetResult -lt $maxWin && 
             $dailyBetResult -gt $maxLoss ]]
 	do
-		makeBetAndUpdate
+		dailyBetResult="$( makeBetAndUpdate )"
 	done
+	echo $dailyBetResult
 }
 
 function monthlyBetting() {
 	
 	for (( day=1; day <= $NUM_OF_DAYS; day++ ))
 	do
-   	dailyBetting
+		dailyBetResult="$( dailyBetting )"
 		totalBetResult=$(( $totalBetResult + $dailyBetResult ))	
+		dailyResultDict[$day]=$totalBetResult
 		dailyBetResult=0
 	done
-	echo $totalBetResult
 }
 
 monthlyBetting
+numOfEntries=${#dailyResultDict[@]}
+allDays=${!dailyResultDict[@]}
+allValues=${dailyResultDict[@]}
+finalResult=$totalBetResult
