@@ -32,7 +32,7 @@ function makeBetAndUpdate() {
 	echo $dailyBetResult
 }
 
-function dailyBetting() {
+function doDailyBetting() {
 	while [[ $dailyBetResult -lt $maxWin && 
             $dailyBetResult -gt $maxLoss ]]
 	do
@@ -41,11 +41,11 @@ function dailyBetting() {
 	echo $dailyBetResult
 }
 
-function monthlyBetting() {
+function doMonthlyBetting() {
 	
 	for (( day=1; day <= $NUM_OF_DAYS; day++ ))
 	do
-		dailyBetResult="$( dailyBetting )"
+		dailyBetResult="$( doDailyBetting )"
 		totalBetResult=$(( $totalBetResult + $dailyBetResult ))	
 		dailyResultDict[$day]=$totalBetResult
 		dailyBetResult=0
@@ -75,7 +75,7 @@ function findBestAndWorstDays() {
 
 # Starting of the Main Program
 
-monthlyBetting
+doMonthlyBetting
 findBestAndWorstDays
 
 numOfEntries=${#dailyResultDict[@]}
