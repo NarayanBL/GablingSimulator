@@ -75,12 +75,30 @@ function findBestAndWorstDays() {
 
 # Starting of the Main Program
 
-doMonthlyBetting
-findBestAndWorstDays
+continuePlaying=1
+resultAtQuiting=0
+numOfMonthsPlayed=0
+while [ $continuePlaying -eq 1 ] 
+do
+	doMonthlyBetting
+	findBestAndWorstDays
 
-numOfEntries=${#dailyResultDict[@]}
-allDays=${!dailyResultDict[@]}
-allValues=${dailyResultDict[@]}
-finalResult=$totalBetResult
-echo "Best Day " $bestDay " = " $bestDayResult
-echo "Worst Day " $worstDay " = " $worstDayResult
+	numOfEntries=${#dailyResultDict[@]}
+	allDays=${!dailyResultDict[@]}
+	allValues=${dailyResultDict[@]}
+	finalResult=$totalBetResult
+	echo "Best Day " $bestDay " = " $bestDayResult
+	echo "Worst Day " $worstDay " = " $worstDayResult
+
+	numOfMonthsPlayed=$(($numOfMonthsPlayed+1))
+	resultAtQuiting=$(( $resultAtQuiting + $finalResult ))
+	if [ $finalResult -ge 0 ]
+	then
+		continuePlaying=1
+	else
+		continuePlaying=0
+	fi
+done
+
+numOfMonthsPlayed=$numOfMonthsPlayed
+resultAtQuiting=$resultAtQuiting
