@@ -52,8 +52,35 @@ function monthlyBetting() {
 	done
 }
 
+function findBestAndWorstDays() {
+	bestDay=1
+	worstDay=1
+	bestDayResult=${dailyResultDict[1]}
+	worstDayResult=${dailyResultDict[1]}
+
+	for day in "${!dailyResultDict[@]}"; do
+   	result=${dailyResultDict[$day]}
+   	if [ $bestDayResult -lt $result ]
+   	then
+      	bestDayResult=$result
+      	bestDay=$day
+   	fi
+   	if [ $worstDayResult -gt $result ]
+   	then
+      	worstDayResult=$result
+      	worstDay=$day
+   	fi
+	done
+}
+
+# Starting of the Main Program
+
 monthlyBetting
+findBestAndWorstDays
+
 numOfEntries=${#dailyResultDict[@]}
 allDays=${!dailyResultDict[@]}
 allValues=${dailyResultDict[@]}
 finalResult=$totalBetResult
+echo "Best Day " $bestDay " = " $bestDayResult
+echo "Worst Day " $worstDay " = " $worstDayResult
