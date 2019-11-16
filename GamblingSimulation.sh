@@ -7,8 +7,9 @@ WON=1
 LOSS=0
 STAKE=100
 BET_AMOUNT=1
-DAILY_RESIGN_PERC=50
-NUM_OF_DAYS=20
+DAILY_RESIGN_PERC=2
+NUM_OF_DAYS=2
+NUM_OF_MONTHS_PLAYED=12
 
 #Variable
 dailyBetResult=0
@@ -73,32 +74,30 @@ function findBestAndWorstDays() {
 	done
 }
 
-# Starting of the Main Program
-
 continuePlaying=1
 resultAtQuiting=0
 numOfMonthsPlayed=0
-while [ $continuePlaying -eq 1 ] 
-do
+function playGamblingSimulationGame() {
+
 	doMonthlyBetting
 	findBestAndWorstDays
-
-	numOfEntries=${#dailyResultDict[@]}
-	allDays=${!dailyResultDict[@]}
-	allValues=${dailyResultDict[@]}
-	finalResult=$totalBetResult
+	local numOfEntries=${#dailyResultDict[@]}
+	local allDays=${!dailyResultDict[@]}
+	local allValues=${dailyResultDict[@]}
+	local finalResult=$totalBetResult
 	echo "Best Day " $bestDay " = " $bestDayResult
 	echo "Worst Day " $worstDay " = " $worstDayResult
 
 	numOfMonthsPlayed=$(($numOfMonthsPlayed+1))
 	resultAtQuiting=$(( $resultAtQuiting + $finalResult ))
-	if [ $finalResult -ge 0 ]
+	if [[ $finalResult -ge 0 && $numOfMonthsPlayed -lt $NUM_OF_MONTHS_PLAYED ]]
 	then
-		continuePlaying=1
-	else
-		continuePlaying=0
+		playGamblingSimulationGame
 	fi
-done
+}
 
+# Starting of the Main Program
+
+playGamblingSimulationGame
 numOfMonthsPlayed=$numOfMonthsPlayed
 resultAtQuiting=$resultAtQuiting
