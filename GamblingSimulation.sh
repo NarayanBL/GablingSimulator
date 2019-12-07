@@ -27,8 +27,8 @@ function makeBet() {
 }
 
 function makeBetAndUpdate() {
-   local betAmount="$( makeBet )"
-   dailyBetResult=$(($dailyBetResult+$betAmount))
+	local betAmount="$( makeBet )"
+	dailyBetResult=$(($dailyBetResult+$betAmount))
 	echo $dailyBetResult
 }
 
